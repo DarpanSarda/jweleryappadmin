@@ -43,7 +43,7 @@ export default function ProductsPage() {
       const response = await fetch(`/api/categories?_t=${Date.now()}`, { cache: 'no-store' })
       if (response.ok) {
         const data = await response.json()
-        setCategories(data)
+        setCategories(data.categories || data)
       } else {
         const error = await response.json()
         toast.error(error.error || 'Failed to fetch categories')
