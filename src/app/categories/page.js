@@ -10,6 +10,7 @@ export default function CategoriesPage() {
   const [loading, setLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingCategory, setEditingCategory] = useState(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState({
     name: ''
   })
@@ -61,11 +62,13 @@ export default function CategoriesPage() {
   const closeModal = () => {
     setIsModalOpen(false)
     setEditingCategory(null)
+    setIsSubmitting(false)
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
+      setIsSubmitting(true)
       const url = editingCategory ? `/api/categories/${editingCategory.id}` : '/api/categories'
       const method = editingCategory ? 'PUT' : 'POST'
 
@@ -88,6 +91,8 @@ export default function CategoriesPage() {
     } catch (error) {
       console.error('Error saving category:', error)
       toast.error('Failed to save category')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -359,7 +364,7 @@ export default function CategoriesPage() {
                   <h3 className="text-lg font-semibold text-gray-900">
                     {editingCategory ? 'Edit Category' : 'Add New Category'}
                   </h3>
-                  <button onClick={closeModal} className="p-1 rounded text-gray-400 hover:text-gray-600 hover:bg-gray-100">
+                  <button onClick={closeModal} disabled={isSubmitting} className="p-1 rounded text-gray-400 hover:text-gray-600 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -383,15 +388,24 @@ export default function CategoriesPage() {
                     <button
                       type="button"
                       onClick={closeModal}
-                      className="px-4 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg font-medium"
+                      disabled={isSubmitting}
+                      className="px-4 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
-                      className="px-4 py-2 text-sm text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg font-medium"
+                      disabled={isSubmitting}
+                      className="px-4 py-2 text-sm text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                     >
-                      {editingCategory ? 'Update' : 'Add'} Category
+                      {isSubmitting ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          Saving...
+                        </>
+                      ) : (
+                        <>{editingCategory ? 'Update' : 'Add'} Category</>
+                      )}
                     </button>
                   </div>
                 </form>
