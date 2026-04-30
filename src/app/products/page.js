@@ -385,9 +385,9 @@ export default function ProductsPage() {
                         </td>
 
                         <td className="px-4 py-3 whitespace-nowrap">
-                          <p className="text-sm font-medium text-gray-900">${product.discounted_price}</p>
+                          <p className="text-sm font-medium text-gray-900">₹{product.discounted_price}</p>
                           {product.original_price > product.discounted_price && (
-                            <p className="text-xs text-gray-500 line-through">${product.original_price}</p>
+                            <p className="text-xs text-gray-500 line-through">₹{product.original_price}</p>
                           )}
                         </td>
 
@@ -604,7 +604,7 @@ export default function ProductsPage() {
 
                   <div className="grid grid-cols-3 gap-3">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Original Price ($)</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Original Price (₹)</label>
                       <input
                         type="number"
                         required
@@ -617,7 +617,7 @@ export default function ProductsPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Discounted Price ($)</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Discounted Price (₹)</label>
                       <input
                         type="number"
                         required

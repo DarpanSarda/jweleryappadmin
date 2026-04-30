@@ -86,7 +86,7 @@ export default function OrdersPage() {
 
   const handleStatusUpdate = async (orderId, newStatus) => {
     try {
-      const response = await fetch(`/api/orders/${orderId}`, {
+      const response = await fetch(`/api/orders/{orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -115,7 +115,7 @@ export default function OrdersPage() {
     }
 
     try {
-      const response = await fetch(`/api/orders/${orderId}`, {
+      const response = await fetch(`/api/orders/{orderId}`, {
         method: 'DELETE'
       })
 
@@ -245,7 +245,7 @@ export default function OrdersPage() {
                 </div>
                 <div>
                   <p className="text-gray-500 text-xs">Total Revenue</p>
-                  <p className="text-2xl font-semibold text-gray-900">${stats.totalRevenue.toFixed(2)}</p>
+                  <p className="text-2xl font-semibold text-gray-900">₹{stats.totalRevenue.toFixed(2)}</p>
                 </div>
               </div>
             </div>
@@ -265,31 +265,31 @@ export default function OrdersPage() {
               <div className="flex gap-2">
                 <button
                   onClick={() => { setFilterStatus('all'); setPage(1) }}
-                  className={`px-3 py-2 rounded-lg text-sm ${filterStatus === 'all' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  className={`px-3 py-2 rounded-lg text-sm {filterStatus === 'all' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 >
                   All
                 </button>
                 <button
                   onClick={() => { setFilterStatus('pending'); setPage(1) }}
-                  className={`px-3 py-2 rounded-lg text-sm ${filterStatus === 'pending' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  className={`px-3 py-2 rounded-lg text-sm {filterStatus === 'pending' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 >
                   Pending
                 </button>
                 <button
                   onClick={() => { setFilterStatus('processing'); setPage(1) }}
-                  className={`px-3 py-2 rounded-lg text-sm ${filterStatus === 'processing' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  className={`px-3 py-2 rounded-lg text-sm {filterStatus === 'processing' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 >
                   Processing
                 </button>
                 <button
                   onClick={() => { setFilterStatus('shipped'); setPage(1) }}
-                  className={`px-3 py-2 rounded-lg text-sm ${filterStatus === 'shipped' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  className={`px-3 py-2 rounded-lg text-sm {filterStatus === 'shipped' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 >
                   Shipped
                 </button>
                 <button
                   onClick={() => { setFilterStatus('delivered'); setPage(1) }}
-                  className={`px-3 py-2 rounded-lg text-sm ${filterStatus === 'delivered' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  className={`px-3 py-2 rounded-lg text-sm {filterStatus === 'delivered' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 >
                   Delivered
                 </button>
@@ -315,12 +315,13 @@ export default function OrdersPage() {
                       Customer <SortIcon field="user_name" />
                     </th>
                     <th
-                      onClick={() => handleSort('created_at')}
+                      onClick={() => handleSort('createdAt')}
                       className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase cursor-pointer hover:bg-gray-100 select-none"
                     >
-                      Date <SortIcon field="created_at" />
+                      Date <SortIcon field="createdAt" />
                     </th>
                     <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Items</th>
+                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Shipping Zone</th>
                     <th
                       onClick={() => handleSort('grand_total')}
                       className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase cursor-pointer hover:bg-gray-100 select-none"
@@ -340,7 +341,7 @@ export default function OrdersPage() {
                 <tbody className="divide-y divide-gray-200">
                   {loading ? (
                     <tr>
-                      <td colSpan="8" className="px-6 py-16 text-center">
+                      <td colSpan="9" className="px-6 py-16 text-center">
                         <div className="flex flex-col items-center gap-3">
                           <div className="w-8 h-8 border-3 border-gray-200 border-t-indigo-600 rounded-full animate-spin" />
                           <p className="text-sm text-gray-500">Loading orders...</p>
@@ -349,7 +350,7 @@ export default function OrdersPage() {
                     </tr>
                   ) : orders.length === 0 ? (
                     <tr>
-                      <td colSpan="8" className="px-6 py-16 text-center">
+                      <td colSpan="9" className="px-6 py-16 text-center">
                         <svg className="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                         </svg>
@@ -368,7 +369,7 @@ export default function OrdersPage() {
                           <div className="text-xs text-gray-500">{order.user_email || 'N/A'}</div>
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                          {order.created_at ? new Date(order.created_at).toLocaleString('en-US', {
+                          {order.createdAt ? new Date(order.createdAt).toLocaleString('en-US', {
                             year: 'numeric',
                             month: 'short',
                             day: 'numeric',
@@ -380,8 +381,13 @@ export default function OrdersPage() {
                         <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-700">
                           {order.items?.length || 0} items
                         </td>
+                        <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
+                          <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-700">
+                            {order.shipping_zone_name || order.shipping_zone || 'N/A'}
+                          </span>
+                        </td>
                         <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
-                          ${order.grand_total?.toFixed(2) || '0.00'}
+                          ₹{order.grand_total?.toFixed(2) || '0.00'}
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap">
                           <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${getPaymentMethodBadge(order.payment_method)}`}>
@@ -471,7 +477,7 @@ export default function OrdersPage() {
                         <button
                           key={pageNum}
                           onClick={() => setPage(pageNum)}
-                          className={`px-3 py-1 text-sm border rounded font-medium ${
+                          className={`px-3 py-1 text-sm border rounded font-medium {
                             page === pageNum
                               ? 'bg-indigo-600 text-white border-indigo-600'
                               : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
@@ -518,53 +524,209 @@ export default function OrdersPage() {
               </div>
 
               <div className="p-6 space-y-6">
+                {/* Order Status & Payment */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-gray-50 rounded-lg p-4">
-                    <p className="text-sm text-gray-500">Order Status</p>
-                    <p className="text-lg font-semibold">
-                      <span className={`px-3 py-1 text-sm font-medium rounded-full ${getStatusColor(selectedOrder.order_status)}`}>
-                        {selectedOrder.order_status}
-                      </span>
-                    </p>
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-lg bg-indigo-100">
+                        <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Order Status</p>
+                        <span className={`px-3 py-1 text-sm font-medium rounded-full ${getStatusColor(selectedOrder.order_status)}`}>
+                          {selectedOrder.order_status?.charAt(0).toUpperCase() + selectedOrder.order_status?.slice(1) || 'N/A'}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                   <div className="bg-gray-50 rounded-lg p-4">
-                    <p className="text-sm text-gray-500">Payment Method</p>
-                    <p className="text-lg font-semibold">
-                      <span className={`px-3 py-1 text-sm font-medium rounded-full ${getPaymentMethodBadge(selectedOrder.payment_method)}`}>
-                        {selectedOrder.payment_method}
-                      </span>
-                    </p>
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-lg bg-green-100">
+                        <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Payment Method</p>
+                        <span className={`px-3 py-1 text-sm font-medium rounded-full ${getPaymentMethodBadge(selectedOrder.payment_method)}`}>
+                          {selectedOrder.payment_method || 'N/A'}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <h4 className="text-lg font-semibold mb-3">Customer Information</h4>
+                {/* Customer Information */}
+                <div className="bg-gray-50 rounded-lg p-5">
+                  <h4 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                    <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    Customer Information
+                  </h4>
                   <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <p className="text-gray-500">Name</p>
-                      <p className="font-medium">{selectedOrder.user_name || 'N/A'}</p>
+                    <div className="flex items-start gap-3">
+                      <div className="p-1.5 rounded bg-gray-200 mt-0.5">
+                        <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-xs">Customer Name</p>
+                        <p className="font-medium text-gray-900">{selectedOrder.user_name || 'N/A'}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-gray-500">Email</p>
-                      <p className="font-medium">{selectedOrder.user_email || 'N/A'}</p>
+                    <div className="flex items-start gap-3">
+                      <div className="p-1.5 rounded bg-gray-200 mt-0.5">
+                        <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-xs">Email Address</p>
+                        <p className="font-medium text-gray-900 break-all">{selectedOrder.user_email || 'N/A'}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-gray-500">Phone</p>
-                      <p className="font-medium">{selectedOrder.user_number || 'N/A'}</p>
+                    <div className="flex items-start gap-3">
+                      <div className="p-1.5 rounded bg-gray-200 mt-0.5">
+                        <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-xs">Phone Number</p>
+                        <p className="font-medium text-gray-900">{selectedOrder.user_number || 'N/A'}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-gray-500">Order Date</p>
-                      <p className="font-medium">{selectedOrder.created_at ? new Date(selectedOrder.created_at).toLocaleString() : 'N/A'}</p>
+                    <div className="flex items-start gap-3">
+                      <div className="p-1.5 rounded bg-gray-200 mt-0.5">
+                        <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-xs">Order Date</p>
+                        <p className="font-medium text-gray-900">
+                          {selectedOrder.createdAt ? new Date(selectedOrder.createdAt).toLocaleString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: '2-digit',
+                            hour12: true
+                          }) : 'N/A'}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                  {selectedOrder.user_address && (
-                    <div className="mt-3">
-                      <p className="text-gray-500">Address</p>
-                      <p className="font-medium">
-                        {selectedOrder.user_address}, {selectedOrder.user_city}, {selectedOrder.user_state} - {selectedOrder.user_pincode}
-                      </p>
+                </div>
+
+                {/* Shipping Address */}
+                <div className="bg-gray-50 rounded-lg p-5">
+                  <h4 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                    <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    Shipping Address
+                  </h4>
+                  <div className="space-y-3 text-sm">
+                    <div className="flex items-start gap-3">
+                      <div className="p-1.5 rounded bg-gray-200 mt-0.5">
+                        <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-xs">Street Address</p>
+                        <p className="font-medium text-gray-900">{selectedOrder.user_address || 'N/A'}</p>
+                      </div>
                     </div>
-                  )}
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="flex items-start gap-3">
+                        <div className="p-1.5 rounded bg-gray-200 mt-0.5">
+                          <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                          </svg>
+                          </div>
+                        <div>
+                          <p className="text-gray-500 text-xs">City</p>
+                          <p className="font-medium text-gray-900">{selectedOrder.user_city || 'N/A'}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="p-1.5 rounded bg-gray-200 mt-0.5">
+                          <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21h18M9 8h1m-1 4h1m4-4h1m-1 4h1M3 21l9-18 9 18" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p className="text-gray-500 text-xs">State</p>
+                          <p className="font-medium text-gray-900">{selectedOrder.user_state || 'N/A'}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className="p-1.5 rounded bg-gray-200 mt-0.5">
+                          <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
+                          </svg>
+                        </div>
+                        <div>
+                          <p className="text-gray-500 text-xs">PIN Code</p>
+                          <p className="font-medium text-gray-900">{selectedOrder.user_pincode || 'N/A'}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Shipping Details */}
+                <div className="bg-gray-50 rounded-lg p-5">
+                  <h4 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                    <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+                    </svg>
+                    Shipping Details
+                  </h4>
+                  <div className="grid grid-cols-3 gap-4 text-sm">
+                    <div className="flex items-start gap-3">
+                      <div className="p-1.5 rounded bg-gray-200 mt-0.5">
+                        <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-xs">Shipping Zone</p>
+                        <p className="font-medium text-gray-900">{selectedOrder.shipping_zone_name || selectedOrder.shipping_zone || 'N/A'}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="p-1.5 rounded bg-gray-200 mt-0.5">
+                        <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-xs">Shipping Method</p>
+                        <p className="font-medium text-gray-900 capitalize">{selectedOrder.shipping_method || 'N/A'}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="p-1.5 rounded bg-gray-200 mt-0.5">
+                        <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-gray-500 text-xs">Estimated Delivery</p>
+                        <p className="font-medium text-gray-900">{selectedOrder.shipping_estimated_days || 'N/A'}</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div>
@@ -594,10 +756,10 @@ export default function OrdersPage() {
                                 <span className="text-sm font-medium">{item.product_name}</span>
                               </div>
                             </td>
-                            <td className="px-4 py-3 text-sm">${item.price?.toFixed(2) || '0.00'}</td>
+                            <td className="px-4 py-3 text-sm">{item.price?.toFixed(2) || '0.00'}</td>
                             <td className="px-4 py-3 text-sm">{item.quantity}</td>
                             <td className="px-4 py-3 text-sm font-medium">
-                              ${item.subtotal?.toFixed(2) || '0.00'}
+                              {item.subtotal?.toFixed(2) || '0.00'}
                             </td>
                           </tr>
                         ))}
@@ -610,21 +772,21 @@ export default function OrdersPage() {
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Subtotal</span>
-                      <span className="font-medium">${selectedOrder.subtotal?.toFixed(2) || '0.00'}</span>
+                      <span className="font-medium">{selectedOrder.subtotal?.toFixed(2) || '0.00'}</span>
                     </div>
                     {selectedOrder.discount > 0 && (
                       <div className="flex justify-between text-green-600">
                         <span>Discount</span>
-                        <span className="font-medium">-${selectedOrder.discount?.toFixed(2) || '0.00'}</span>
+                        <span className="font-medium">-{selectedOrder.discount?.toFixed(2) || '0.00'}</span>
                       </div>
                     )}
                     <div className="flex justify-between">
                       <span className="text-gray-600">Shipping</span>
-                      <span className="font-medium">${selectedOrder.shipping_charge?.toFixed(2) || '0.00'}</span>
+                      <span className="font-medium">{selectedOrder.shipping_charge?.toFixed(2) || '0.00'}</span>
                     </div>
                     <div className="flex justify-between text-lg font-bold border-t pt-2">
                       <span>Total</span>
-                      <span className="text-indigo-600">${selectedOrder.grand_total?.toFixed(2) || '0.00'}</span>
+                      <span className="text-indigo-600">{selectedOrder.grand_total?.toFixed(2) || '0.00'}</span>
                     </div>
                   </div>
                 </div>

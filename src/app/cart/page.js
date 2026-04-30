@@ -34,7 +34,7 @@ export default function CartPage() {
         page: page.toString(),
         limit: limit.toString()
       })
-      const response = await fetch(`/api/cart?${params}`)
+      const response = await fetch(`/api/cart?₹{params}`)
       if (response.ok) {
         const data = await response.json()
         setCarts(data.carts || [])
@@ -62,7 +62,7 @@ export default function CartPage() {
     if (!confirm('Are you sure you want to delete this cart?')) return
 
     try {
-      const response = await fetch(`/api/cart/${id}`, { method: 'DELETE' })
+      const response = await fetch(`/api/cart/₹{id}`, { method: 'DELETE' })
       if (response.ok) {
         toast.success('Cart deleted successfully!')
         fetchCarts()
@@ -182,7 +182,7 @@ export default function CartPage() {
                 </div>
                 <div>
                   <p className="text-gray-500 text-xs">Total Value</p>
-                  <p className="text-2xl font-semibold text-gray-900">${getTotalValue()}</p>
+                  <p className="text-2xl font-semibold text-gray-900">₹{getTotalValue()}</p>
                 </div>
               </div>
             </div>
@@ -202,19 +202,19 @@ export default function CartPage() {
               <div className="flex gap-2">
                 <button
                   onClick={() => { setFilterStatus('all'); setPage(1) }}
-                  className={`px-3 py-2 rounded-lg text-sm ${filterStatus === 'all' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  className={`px-3 py-2 rounded-lg text-sm ₹{filterStatus === 'all' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 >
                   All
                 </button>
                 <button
                   onClick={() => { setFilterStatus('active'); setPage(1) }}
-                  className={`px-3 py-2 rounded-lg text-sm ${filterStatus === 'active' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  className={`px-3 py-2 rounded-lg text-sm ₹{filterStatus === 'active' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 >
                   Active
                 </button>
                 <button
                   onClick={() => { setFilterStatus('empty'); setPage(1) }}
-                  className={`px-3 py-2 rounded-lg text-sm ${filterStatus === 'empty' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  className={`px-3 py-2 rounded-lg text-sm ₹{filterStatus === 'empty' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 >
                   Empty
                 </button>
@@ -287,7 +287,7 @@ export default function CartPage() {
                           </span>
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap">
-                          <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${
+                          <span className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ₹{
                             cart.items && cart.items.length > 0
                               ? 'bg-green-50 text-green-700'
                               : 'bg-gray-100 text-gray-600'
@@ -296,13 +296,13 @@ export default function CartPage() {
                           </span>
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                          ${(cart.subtotal || 0).toFixed(2)}
+                          ₹{(cart.subtotal || 0).toFixed(2)}
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                          ${(cart.shipping_charge || 0).toFixed(2)}
+                          ₹{(cart.shipping_charge || 0).toFixed(2)}
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
-                          ${(cart.grand_total || 0).toFixed(2)}
+                          ₹{(cart.grand_total || 0).toFixed(2)}
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
                           {formatDate(cart.last_updated)}
@@ -385,7 +385,7 @@ export default function CartPage() {
                         <button
                           key={pageNum}
                           onClick={() => setPage(pageNum)}
-                          className={`px-3 py-1 text-sm border rounded font-medium ${
+                          className={`px-3 py-1 text-sm border rounded font-medium ₹{
                             page === pageNum
                               ? 'bg-indigo-600 text-white border-indigo-600'
                               : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
@@ -461,10 +461,10 @@ export default function CartPage() {
                                 <p className="text-sm font-medium text-gray-900">
                                   {item.product_id?.product_name || item.product_name}
                                 </p>
-                                <p className="text-sm text-gray-500">Qty: {item.quantity} × ${item.price?.toFixed(2)}</p>
+                                <p className="text-sm text-gray-500">Qty: {item.quantity} × ₹{item.price?.toFixed(2)}</p>
                               </div>
                             </div>
-                            <p className="text-sm font-medium text-gray-900">${item.subtotal?.toFixed(2)}</p>
+                            <p className="text-sm font-medium text-gray-900">₹{item.subtotal?.toFixed(2)}</p>
                           </div>
                         ))}
                       </div>
@@ -477,15 +477,15 @@ export default function CartPage() {
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-600">Subtotal</span>
-                        <span className="font-medium">${(selectedCart.subtotal || 0).toFixed(2)}</span>
+                        <span className="font-medium">₹{(selectedCart.subtotal || 0).toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-600">Shipping</span>
-                        <span className="font-medium">${(selectedCart.shipping_charge || 0).toFixed(2)}</span>
+                        <span className="font-medium">₹{(selectedCart.shipping_charge || 0).toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-lg font-bold">
                         <span>Total</span>
-                        <span>${(selectedCart.grand_total || 0).toFixed(2)}</span>
+                        <span>₹{(selectedCart.grand_total || 0).toFixed(2)}</span>
                       </div>
                     </div>
                   </div>
