@@ -5,6 +5,7 @@ import Link from 'next/link'
 import toast from 'react-hot-toast'
 import Sidebar from '@/components/Sidebar'
 import Header from '@/components/Header'
+import { uploadMultipleImagesToCloudinary } from '@/utils/cloudinaryUpload'
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([])
@@ -121,33 +122,23 @@ export default function ProductsPage() {
     if (files.length === 0) return
     try {
       setUploadingImages(true)
-      const base64Promises = files.map(file => new Promise((resolve, reject) => {
-        const reader = new FileReader()
-        reader.onload = () => resolve(reader.result)
-        reader.onerror = reject
-        reader.readAsDataURL(file)
-      }))
-      const base64Images = await Promise.all(base64Promises)
-      setFormData({ ...formData, images: [...(formData.images || []), ...base64Images] })
+      toast.loading('Uploading images...', { id: 'upload' })
+      const imageUrls = await uploadMultipleImagesToCloudinary(files)
+      setFormData({ ...formData, images: [...(formData.images || []), ...imageUrls] })
       setImageFiles([...imageFiles, ...files])
-      toast.success(`${files.length} image(s) selected`)
-    } catch {
-      toast.error('Failed to read images')
+      toast.success(`${files.length} image(s) uploaded successfully!`, { id: 'upload' })
+    } catch (error) {
+      toast.error('Failed to upload images: ' + error.message, { id: 'upload' })
     } finally {
       setUploadingImages(false)
     }
   }
 
   const removeImage = (index) => {
-    const imageToRemove = formData.images[index]
-    if (!imageToRemove.startsWith('data:')) {
-      fetch('/api/cloudinary/delete', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imageUrls: [imageToRemove] })
-      }).catch(() => { })
-    }
-    setFormData({ ...formData, images: formData.images.filter((_, i) => i !== index) })
+    setFormData({
+      ...formData,
+      images: formData.images.filter((_, i) => i !== index)
+    })
     setImageFiles(imageFiles.filter((_, i) => i !== index))
   }
 
@@ -169,7 +160,7 @@ export default function ProductsPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!editingProduct && imageFiles.length === 0) {
+    if (!editingProduct && (!formData.images || formData.images.length === 0)) {
       toast.error('Please upload at least one image')
       return
     }
@@ -177,18 +168,11 @@ export default function ProductsPage() {
       setUploadingImages(true)
       const url = editingProduct ? `/api/products/${editingProduct.id}` : '/api/products'
       const method = editingProduct ? 'PUT' : 'POST'
-      const submitFormData = new FormData()
-      submitFormData.append('product_name', formData.product_name)
-      submitFormData.append('original_price', formData.original_price)
-      submitFormData.append('discounted_price', formData.discounted_price)
-      submitFormData.append('discounted_percentage', formData.discounted_percentage)
-      submitFormData.append('category_id', formData.category_id)
-      submitFormData.append('stock', formData.stock)
-      submitFormData.append('short_description', formData.short_description)
-      submitFormData.append('long_description', formData.long_description)
-      submitFormData.append('existingImages', JSON.stringify(formData.images.filter(img => !img.startsWith('data:'))))
-      imageFiles.forEach(file => submitFormData.append('images', file))
-      const response = await fetch(url, { method, body: submitFormData })
+      const response = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
       if (response.ok) {
         await fetchProducts()
         closeModal()

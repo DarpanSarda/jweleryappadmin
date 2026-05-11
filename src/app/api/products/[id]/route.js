@@ -3,7 +3,7 @@ import Product from '@/models/Product';
 import Category from '@/models/Category';
 import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
-import { uploadMultipleImages, deleteMultipleImages } from '@/lib/cloudinary';
+import { deleteMultipleImages } from '@/lib/cloudinary';
 
 export async function GET(request, { params }) {
   try {
@@ -40,21 +40,19 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ error: 'Invalid product ID format' }, { status: 400 });
     }
 
-    // Parse FormData
-    const formData = await request.formData();
+    // Parse JSON body
+    const body = await request.json();
 
-    // Extract all fields
-    const product_name = formData.get('product_name');
-    const original_price = parseFloat(formData.get('original_price'));
-    const discounted_price = parseFloat(formData.get('discounted_price'));
-    const category_id = formData.get('category_id');
-    const stock = parseInt(formData.get('stock'));
-    const short_description = formData.get('short_description');
-    const long_description = formData.get('long_description');
-    const existingImages = JSON.parse(formData.get('existingImages') || '[]');
-
-    // Get image files
-    const imageFiles = formData.getAll('images').filter(file => file.size > 0);
+    const {
+      product_name,
+      original_price,
+      discounted_price,
+      category_id,
+      stock,
+      short_description,
+      long_description,
+      images
+    } = body;
 
     // Validate category_id if provided
     if (category_id && !mongoose.Types.ObjectId.isValid(category_id)) {
@@ -69,17 +67,6 @@ export async function PUT(request, { params }) {
       }
     }
 
-    // Upload new images to Cloudinary
-    let uploadedImageUrls = [];
-    if (imageFiles.length > 0) {
-      console.log('Uploading', imageFiles.length, 'images to Cloudinary...');
-      uploadedImageUrls = await uploadMultipleImages(imageFiles);
-      console.log('Images uploaded successfully:', uploadedImageUrls);
-    }
-
-    // Combine existing images with newly uploaded ones
-    const allImages = [...existingImages, ...uploadedImageUrls];
-
     // Calculate discount percentage
     const discounted_percentage = original_price > 0
       ? Math.round(((original_price - discounted_price) / original_price) * 100)
@@ -90,7 +77,7 @@ export async function PUT(request, { params }) {
       original_price,
       discounted_price,
       discounted_percentage,
-      images: allImages,
+      images: images || [],
       category_id,
       stock,
       short_description,
