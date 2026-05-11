@@ -100,7 +100,7 @@ export async function PUT(request, { params }) {
     const product = await Product.findByIdAndUpdate(
       id,
       updateData,
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     ).populate('category_id', 'name');
 
     if (!product) {

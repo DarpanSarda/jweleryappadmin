@@ -70,7 +70,7 @@ export async function PUT(request, { params }) {
     const review = await Review.findByIdAndUpdate(
       id,
       updateData,
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     ).populate('product_id', 'product_name images');
 
     if (!review) {

@@ -59,7 +59,7 @@ export async function PUT(request, { params }) {
     const order = await Order.findByIdAndUpdate(
       id,
       updateData,
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     );
 
     if (!order) {
