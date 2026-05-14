@@ -86,7 +86,7 @@ export default function OrdersPage() {
 
   const handleStatusUpdate = async (orderId, newStatus) => {
     try {
-      const response = await fetch(`/api/orders/{orderId}`, {
+      const response = await fetch(`/api/orders/${orderId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -115,7 +115,7 @@ export default function OrdersPage() {
     }
 
     try {
-      const response = await fetch(`/api/orders/{orderId}`, {
+      const response = await fetch(`/api/orders/${orderId}`, {
         method: 'DELETE'
       })
 
