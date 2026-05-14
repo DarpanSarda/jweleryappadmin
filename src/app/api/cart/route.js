@@ -1,5 +1,6 @@
 import connectToDatabase from '@/lib/mongodb';
 import Cart from '@/models/Cart';
+import Product from '@/models/Product';
 import { NextResponse } from 'next/server';
 
 export async function GET(request) {
