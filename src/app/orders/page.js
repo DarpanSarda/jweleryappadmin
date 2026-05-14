@@ -265,31 +265,31 @@ export default function OrdersPage() {
               <div className="flex gap-2">
                 <button
                   onClick={() => { setFilterStatus('all'); setPage(1) }}
-                  className={`px-3 py-2 rounded-lg text-sm {filterStatus === 'all' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  className={`px-3 py-2 rounded-lg text-sm ${filterStatus === 'all' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 >
                   All
                 </button>
                 <button
                   onClick={() => { setFilterStatus('pending'); setPage(1) }}
-                  className={`px-3 py-2 rounded-lg text-sm {filterStatus === 'pending' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  className={`px-3 py-2 rounded-lg text-sm ${filterStatus === 'pending' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 >
                   Pending
                 </button>
                 <button
                   onClick={() => { setFilterStatus('processing'); setPage(1) }}
-                  className={`px-3 py-2 rounded-lg text-sm {filterStatus === 'processing' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  className={`px-3 py-2 rounded-lg text-sm ${filterStatus === 'processing' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 >
                   Processing
                 </button>
                 <button
                   onClick={() => { setFilterStatus('shipped'); setPage(1) }}
-                  className={`px-3 py-2 rounded-lg text-sm {filterStatus === 'shipped' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  className={`px-3 py-2 rounded-lg text-sm ${filterStatus === 'shipped' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 >
                   Shipped
                 </button>
                 <button
                   onClick={() => { setFilterStatus('delivered'); setPage(1) }}
-                  className={`px-3 py-2 rounded-lg text-sm {filterStatus === 'delivered' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  className={`px-3 py-2 rounded-lg text-sm ${filterStatus === 'delivered' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 >
                   Delivered
                 </button>
@@ -477,7 +477,7 @@ export default function OrdersPage() {
                         <button
                           key={pageNum}
                           onClick={() => setPage(pageNum)}
-                          className={`px-3 py-1 text-sm border rounded font-medium {
+                          className={`px-3 py-1 text-sm border rounded font-medium ${
                             page === pageNum
                               ? 'bg-indigo-600 text-white border-indigo-600'
                               : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
